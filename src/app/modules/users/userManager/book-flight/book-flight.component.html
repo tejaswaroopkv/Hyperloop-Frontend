@@ -1,0 +1,45 @@
+<!-- <p>book flights</p> -->
+<div class="form-container" >
+    <div class="form-content">
+        <form [formGroup]="flightSearchForm"  (ngSubmit)="onSubmit()">
+                <!-- <div class="input-group"> -->
+                        <!-- <div class="input-group-prepend" formControlName ="tripType">
+                            <div class="input-group-text" value="1">
+                                <input type="radio"  aria-label="Radio button for following text input">
+                                <label class="form-check-label" for="flexRadioDefault1">Single Way</label>
+                                <input type="radio"  aria-label="Radio button for following text input">
+                                <label class="form-check-label" for="flexRadioDefault1">Round Trip</label>           
+                            </div>
+                        </div> -->
+                        <div class="form-group">
+                                <!-- <label for="TripType">Trip :</label> -->
+                                <div>
+                                    <span>
+                                            <input id="singleTrip" type="radio" value="1" name="tripType" formControlName="tripType" ><!--(change)="changeGender($event)"-->
+                                            <label for="singleTrip">Single Trip</label>
+                                    </span>
+                                    <span >
+                                            <input id="roundTrip" type="radio" value="2" name="tripType" formControlName="tripType" ><!--(change)="changeGender($event)"-->
+                                            <label class="ml-2" for="roundTrip">Round Trip</label>
+                                    </span>     
+                               </div>
+                        </div>
+                         <div class="form-group">
+                                <select class="custom-select" formControlName="sourcePlace">
+                                        <!-- <option selected>Open this select menu</option> -->
+                                        <option *ngFor="let airport of airportList" value="{{airport.woeid}}">{{airport.city}}</option>
+                                        
+                                </select>
+                        </div>
+                        <div class="form-group">
+                                <select class="custom-select" formControlName="destinationPlace">
+                                        <!-- <option selected>Open this select menu</option> -->
+                                        <option *ngFor="let airport of airportList" value="{{airport.woeid}}">{{airport.city}}</option>
+                                        
+                                </select>
+                        </div>
+
+                    <button type="submit" class="btn btn-info subColor">Search</button>
+        </form>
+    </div>
+</div>
