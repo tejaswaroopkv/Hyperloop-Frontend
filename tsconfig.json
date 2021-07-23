@@ -3,6 +3,7 @@
     "compileOnSave": false,
     "compilerOptions": {
       "resolveJsonModule" : true,
+      "noImplicitAny": false,
       "baseUrl": "./",
       "outDir": "./dist/out-tsc",
       "forceConsistentCasingInFileNames": true,
@@ -20,7 +21,7 @@
       "lib": [
         "es2018",
         "dom"
-      ]
+      ],
     },
     "angularCompilerOptions": {
       "enableI18nLegacyMessageIdFormat": false,
