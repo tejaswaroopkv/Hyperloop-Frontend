@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SearchFlightComponent } from './userManager/search-flight/search-flight.component';
 import { UserMenubarComponent } from './userManager/user-menubar/user-menubar.component';
 import { UserManagerComponent } from './userManager/user-manager/user-manager.component';
+import {MatTableModule } from "@angular/material/table";
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { UserManagerComponent } from './userManager/user-manager/user-manager.co
     MatRadioModule,
     MatSelectModule,
     MatAutocompleteModule,
-    MatTabsModule
+    MatTabsModule,
+    MatTableModule
   ],
 
     providers:[CommonService]

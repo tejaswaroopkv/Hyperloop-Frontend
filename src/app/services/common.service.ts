@@ -16,9 +16,9 @@ export class CommonService {
   postData(url:string,body:any){
    return this.httpClient.post(this.baseurl+url, body);
   }
-  getData(url:string){
+  getData(url:string):Observable<Object[]>{
     console.log(this.baseurl+url);
-    return this.httpClient.get(this.baseurl+url);
+    return this.httpClient.get<Object[]>(this.baseurl+url);
   }
   setSearchFlightData(searchFlightData:any){
    //this.searchFlight= searchFlightData;
