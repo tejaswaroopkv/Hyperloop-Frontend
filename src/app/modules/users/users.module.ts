@@ -19,6 +19,7 @@ import { SearchFlightComponent } from './userManager/search-flight/search-flight
 import { UserMenubarComponent } from './userManager/user-menubar/user-menubar.component';
 import { UserManagerComponent } from './userManager/user-manager/user-manager.component';
 import {MatTableModule } from "@angular/material/table";
+import { PaymentGatewayComponent } from './userManager/payment-gateway/payment-gateway.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import {MatTableModule } from "@angular/material/table";
     SearchFlightComponent,
     UserMenubarComponent,
     UserManagerComponent,
+    PaymentGatewayComponent,
   ],
   imports: [CommonModule,UsersRoutingModule,FormsModule, 
     ReactiveFormsModule,

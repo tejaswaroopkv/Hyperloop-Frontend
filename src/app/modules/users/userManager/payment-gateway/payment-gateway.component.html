@@ -1,0 +1,28 @@
+<div class = "container-fluid">
+        <!-- <p>payment-gateway works!</p> -->
+        <div class = "row">
+                <table class="table thead-dark">
+                                <thead>
+                                         <tr>
+                                                <th *ngFor="let col of passangerTableCols.data">{{col.columnName!='primary'?col.displayName:''}}</th>
+                                          </tr>
+                                </thead>
+                                <tbody>
+                                         <tr class="rowContent" *ngFor="let col of passangersList">
+                                                <td class = "passangerGridContentColor">{{col.passangerName}}</td> 
+                                                <td class = "passangerGridContentColor">{{col.emailId}}</td>
+                                                <td class = "passangerGridContentColor">{{col.contactNumber}}</td>
+                                                <!-- <td class = "passangerGridContentColor">{{col.isPrimary?'Yes':'No'}}</td> -->
+                                        </tr>
+                                                  
+                                </tbody>
+                        </table> 
+
+        </div>   
+        <div class="row">
+                <div class="col-md-4 mb-3 subColor">
+                  <button (click)="checkout(this.totalTicketCost)" class="btn btn-primary btn-block">{{'PAY ' + this.totalTicketCost + ' $'}}</button>
+                </div>
+        </div>
+</div>
+

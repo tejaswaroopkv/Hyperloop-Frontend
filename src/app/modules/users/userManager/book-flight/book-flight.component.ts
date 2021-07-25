@@ -17,9 +17,11 @@ export class BookFlightComponent implements OnInit {
   isEnableReturnDate:boolean=false;
 
   constructor(private router:Router,private formBuilder: FormBuilder,private commonService:CommonService) {
+    this.isEnableReturnDate=false;
   }
 
   ngOnInit(): void {
+    this.isEnableReturnDate=false;
     this.setForm();
     this.fetchAirportData();
   }
@@ -62,7 +64,7 @@ export class BookFlightComponent implements OnInit {
   onSubmit(){
     debugger;
     console.log(this.flightSearchForm.value)
-    this.isEnableReturnDate=this.flightSearchForm.value.tripType=2?true:false;
+    //this.isEnableReturnDate=this.flightSearchForm.value.tripType=2?true:false;
     let data = JSON.parse(this.commonService.getSessionValue('airportData') as any);
     this.mapSrcDesId(data);
     console.log(this.flightSearchForm)
@@ -75,15 +77,11 @@ export class BookFlightComponent implements OnInit {
     // });
     }  
   }
-  // ngOnDestroy(){
-  //   this.router.navigate(['DashBoard/searchFlights']);
-  // }
-  ngOnChanges(){
-    console.log("destroying child...")
-  }
   changeTripType(event:any){
     console.log(event)
-    this.isEnableReturnDate = event.target.value=2?true:false;
+    console.log(this.isEnableReturnDate)
+    this.isEnableReturnDate = event.target.value==2?true:false;
+    console.log(this.isEnableReturnDate)
   }
   resetForm(){
     this.flightSearchForm.reset();

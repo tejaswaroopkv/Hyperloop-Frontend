@@ -1,0 +1,30 @@
+{
+    "data":[
+        {
+            "columnName":"name",
+            "type":"text",
+            "displayName":"Name"
+            
+        },
+        {
+            "columnName":"email",
+            "type":"text",
+            "displayName":"Email"
+            
+        },
+        {
+            "columnName":"contact",
+            "type":"text",
+            "displayName":"Mobile"
+            
+        },
+        {
+            "columnName":"primary",
+            "type":"boolean",
+            "displayName":"Is Primary"
+            
+        }
+
+        
+    ]
+}

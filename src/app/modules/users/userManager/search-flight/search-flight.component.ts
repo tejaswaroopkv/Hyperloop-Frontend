@@ -3,6 +3,8 @@ import { CommonService } from 'src/app/services/common.service';
 import { BookFlightComponent } from '../book-flight/book-flight.component';
 import { DatePipe } from '@angular/common';
 import  *  as  bookingcols  from  '../../../../../assets/data/bookingTable.json';
+import  *  as  passangercols  from  '../../../../../assets/data/passangerTableCol.json';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-search-flight',
@@ -14,45 +16,45 @@ export class SearchFlightComponent implements OnInit {
 
   
 
-  constructor(private commonService:CommonService) { }
+  constructor(private commonService:CommonService,private formBuilder: FormBuilder) { }
 
   searchCriteria: any =[];
   scheduledFlights:any=[];
   isRoundTrip:boolean=false;
   singleSearchResults:any=[];
   roundSearchResults:any=[];
-  selectedSingleWay:any;
-  selectedReturnWay:any;
+  selectedSingleWay:any = {};
+  selectedReturnWay:any = {};
   isSingleWayBookingConfirmed:boolean=false;
   isRoundTripTabEnabled:boolean=false;
   isUserDetailsTabEnabled:boolean=false;
   isPaymentTabEnabled:boolean=false;
   isRoundTripBookingConfirmed:boolean=false;
   isUserDetailsField:boolean=false;
-
-  dataSource = [
-    {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-    {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-    {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-    {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-    {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-    {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-    {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-    {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-    {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-    {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-  ];
-  // displayedColumns= [
-  //   {'AirlineName','Logo','Date'
-  // ];
-
+  passangerDetailsForm : any;
   displayedColumns:any;
+  passangersList:any=[];
+  passangerTableCols:any;
+  isPrimaryContactPresent:boolean=false;
+  totalTicketCost:number=0;
+  isremoveAllTabs:boolean=false;
   ngOnInit() {
+   this.setForm();
    this.flightSearchFormData();
    this.fetchAirportData();
    this.displayedColumns = (bookingcols as any).default
+   this.passangerTableCols =  (passangercols as any).default
    console.log(this.displayedColumns)
   }
+  setForm(){
+    this.passangerDetailsForm = this.formBuilder.group({
+      passangerName: ['', Validators.required],
+      emailId: ['', [Validators.required]],
+      contactNumber: ['', Validators.required],
+      isPrimary :['']
+    })
+    this.resetForm();
+   }
   flightSearchFormData(){
     this.searchCriteria = JSON.parse(this.commonService.getSessionValue('searchFlights') as any);
   }
@@ -103,8 +105,6 @@ export class SearchFlightComponent implements OnInit {
  onSingleWaySelection(row:any){
    console.log(row)
    this.selectedSingleWay = row;
-  //  console.log(ele)
-  //  console.log(field)
  }
  onReturnWaySelection(row:any){
   console.log(row)
@@ -114,11 +114,51 @@ export class SearchFlightComponent implements OnInit {
   this.isSingleWayBookingConfirmed=true;
   this.isRoundTripTabEnabled=true;
   this.isUserDetailsTabEnabled=!this.isRoundTrip?true:false;
+  let price = '';
+  price = this.selectedSingleWay.price;
+  price = price.replace('$', '')
+  this.totalTicketCost =+price; 
+  console.log(this.totalTicketCost);
+
  }
  onReturnWayConfirmation(){
   this.isRoundTripBookingConfirmed=true;
   this.isUserDetailsTabEnabled=true;
+  let price = '';
+  let returnPrice=0;
+  price = this.selectedReturnWay.price;
+  price = price.replace('$', '');
+  returnPrice =+price;
+  this.totalTicketCost = this.totalTicketCost+returnPrice; 
+  console.log(this.totalTicketCost);
  }
+
+resetForm(){
+  this.passangerDetailsForm.reset();
+}
+onPassangersSubmission(){
+  this.isUserDetailsTabEnabled=false;
+  this.isPaymentTabEnabled=true;
+  this.roundSearchResults=[];
+  this.singleSearchResults=[];
+  let passengerCount =  this.passangersList.length;
+  this.totalTicketCost = this.totalTicketCost*passengerCount;
+  this.isremoveAllTabs=true;
+  if(passengerCount==1){
+    this.passangersList[0].isPrimary = true;
+  }
+  console.log(this.passangersList)
+}
+addPassenger(){
+  debugger;
+  console.log(this.passangerDetailsForm.value)
+  if(this.passangerDetailsForm.value.isPrimary==true){
+    this.isPrimaryContactPresent=true;
+  }
+  this.passangersList.push(this.passangerDetailsForm.value)
+  console.log(this.passangersList)
+  this.resetForm();
+}
 
 
 

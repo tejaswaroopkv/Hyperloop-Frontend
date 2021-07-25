@@ -1,14 +1,14 @@
 <div class="container-fluid">
         <div class="row">
                 <mat-tab-group>
-                        <mat-tab [disabled]="this.isSingleWayBookingConfirmed" label="Depature"></mat-tab>
-                        <mat-tab *ngIf= "this.isRoundTrip"[disabled]= "!this.isRoundTripTabEnabled" label="Return"></mat-tab>
-                        <mat-tab label="Passanger Details"[disabled]="!this.isUserDetailsTabEnabled"></mat-tab>
-                        <mat-tab label="Payment"[disabled]="!this.isPaymentTabEnabled && !isUserDetailsField"></mat-tab>
+                        <mat-tab *ngIf="!this.isremoveAllTabs" [disabled]="this.isSingleWayBookingConfirmed" label="Depature"></mat-tab>
+                        <mat-tab *ngIf= "this.isRoundTrip && !this.isremoveAllTabs"[disabled]= "(!this.isRoundTripTabEnabled)||(this.isRoundTripTabEnabled && this.isRoundTripBookingConfirmed)" label="Return"></mat-tab>
+                        <mat-tab *ngIf="!this.isremoveAllTabs" label="Passanger Details"[disabled]="(!this.isUserDetailsTabEnabled)"></mat-tab>
+                        <mat-tab label="Summary & Payment"[disabled]="!this.isPaymentTabEnabled && !isUserDetailsField"></mat-tab>
                 </mat-tab-group>
         </div>
-        <!--form1-->
-        <div *ngIf="!this.isSingleWayBookingConfirmed" class="container-fluid customStyle">
+        <!--Tab 1-->
+        <div *ngIf="!this.isSingleWayBookingConfirmed && this.singleSearchResults.length>0" class="container-fluid customStyle">
                 <table class="table table-hover thead-dark">
                         <thead>
                                  <tr>
@@ -28,8 +28,8 @@
                 <button type="button" [disabled] = "!this.selectedSingleWay" class="btn btn-primary"(click)="onSingleWayConfirmation()">Confirm Flight</button>
                               
         </div>
-        <!--form2-->
-        <div *ngIf="this.isSingleWayBookingConfirmed && !this.isUserDetailsTabEnabled" class="container-fluid customStyle">
+        <!--Tab 2-->
+        <div *ngIf="this.isSingleWayBookingConfirmed && !this.isUserDetailsTabEnabled && this.roundSearchResults.length>0" class="container-fluid customStyle">
                         <table class="table table-hover thead-dark">
                                         <thead>
                                                  <tr>
@@ -48,50 +48,65 @@
                                 </table> 
                                 <button type="button" [disabled] = "!this.selectedReturnWay" class="btn btn-primary"(click)="onReturnWayConfirmation()">Confirm Flight</button>
         </div>
-        <!-- <span *ngIf= "!this.isRoundTrip"class="row">
-                <mat-tab-group>
-                        <mat-tab label="SingleWay"> 
-                        </mat-tab>
-                </mat-tab-group>
-                <div>
-                        <table >
-                                <thead>
-                                        <tr>
-                                                        <th>airlinename</th>
-                                                        <th>source</th>
-                                                        <th>destination</th>
-                                        </tr>
-                                              
-                                </thead>
-                                <tbody>
-                                        <tr>
-                                                <td>
-                                                        indigo
-                                                </td>
-                                                <td>
-                                                        hyderabad
-                                                </td>
-                                                <td>
-                                                        bangalore
-                                                </td>
-                                        </tr>
-                                </tbody>
-                               
-                                
-                        </table>
+         <!--Tab 3-->
+        <div *ngIf="this.isUserDetailsTabEnabled && !this.isPaymentTabEnabled" class = "container-fluid" >
+                <div class = "row">
+                                <form [formGroup]="passangerDetailsForm" ><!--(ngSubmit)="onPassangersSubmission()"-->
+                                        <div class = "row">
+                                                        <div class="col-md-3 form-group">
+                                                                        <label for="passangerName">Name</label>
+                                                                        <input type="text" class="form-control" formControlName ="passangerName">
+                                                        </div>
+                                                        <div class="col-md-4 form-group">
+                                                                <label for="passangerEmail">Email Id</label>
+                                                                <input type="text" class="form-control" formControlName ="emailId">
+                                                        </div>
+                                                        <div class="col-md-3 form-group">
+                                                                <label for="passangerMobile">Mobile</label>
+                                                                <input type="text" class="form-control" formControlName ="contactNumber">
+                                                        </div>
+                                                        <div *ngIf = "!this.isPrimaryContactPresent"class="col-md-2 form-group">
+                                                                        <label for="isPrimary">Primary Passanger</label>
+                                                                        <input type="checkbox" class="form-control" formControlName ="isPrimary">
+                                                        </div>                      
+                                        </div>
+                                        <div class = "row">
+                                                        <button type="button" class="btn btn-info subColor" (click)="addPassenger()">Add</button>
+                                        </div>
+                                                
+                                 </form>
 
                 </div>
-        </span> -->
-        <!-- <span>
-                <mat-tab-group>
-                        <mat-tab label="UserDetails"></mat-tab>
-                        
-                </mat-tab-group>
-        </span> -->
-        <!-- <span>
-                <mat-tab-group>
-                        <mat-tab label="Payment"></mat-tab>
-                      
-                </mat-tab-group>
-        </span> -->
+                <div *ngIf = "this.passangersList.length>0 && !this.isPaymentTabEnabled">
+                        <div class = "row">
+                                        <table class="table table-hover thead-dark">
+                                                        <thead>
+                                                                 <tr>
+                                                                        <th *ngFor="let col of passangerTableCols.data">{{col.displayName}}</th>
+                                                                  </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                                 <tr class="rowContent" *ngFor="let col of passangersList">
+                                                                        <td class = "passangerGridContentColor">{{col.passangerName}}</td> 
+                                                                        <td class = "passangerGridContentColor">{{col.emailId}}</td>
+                                                                        <td class = "passangerGridContentColor">{{col.contactNumber}}</td>
+                                                                        <td class = "passangerGridContentColor">{{col.isPrimary?'Yes':'No'}}</td>
+                                                                </tr>
+                                                                          
+                                                        </tbody>
+                                                </table> 
+
+                        </div>                 
+                        <div class = "row">
+                                <button type="button" class="btn btn-info submitPassanger" (click)="onPassangersSubmission()">Submit Passangers</button>
+                        </div>
+                </div>
+
+        </div>
+
+        <!--Tab 4-->
+        <div  *ngIf="this.isPaymentTabEnabled">
+                <app-payment-gateway [totalTicketCost] = "totalTicketCost" [passangersList] = "this.passangersList" [selectedSingleWay] = "this.selectedSingleWay" [selectedReturnWay] = "this.selectedReturnWay" [isRoundTrip] = "isRoundTrip"></app-payment-gateway>
+        </div>
+       
 </div>
