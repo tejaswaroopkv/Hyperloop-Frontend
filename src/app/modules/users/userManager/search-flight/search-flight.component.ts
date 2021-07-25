@@ -51,7 +51,7 @@ export class SearchFlightComponent implements OnInit {
       passangerName: ['', Validators.required],
       emailId: ['', [Validators.required]],
       contactNumber: ['', Validators.required],
-      isPrimary :['']
+      isPrimary :[false]
     })
     this.resetForm();
    }
@@ -154,6 +154,9 @@ addPassenger(){
   console.log(this.passangerDetailsForm.value)
   if(this.passangerDetailsForm.value.isPrimary==true){
     this.isPrimaryContactPresent=true;
+  }
+  if(this.passangerDetailsForm.value.isPrimary==null){
+    this.passangerDetailsForm.value.isPrimary=false;
   }
   this.passangersList.push(this.passangerDetailsForm.value)
   console.log(this.passangersList)

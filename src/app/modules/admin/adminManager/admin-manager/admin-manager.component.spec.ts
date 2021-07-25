@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ScheduleFlightComponent } from './schedule-flight.component';
+import { AdminManagerComponent } from './admin-manager.component';
 
-describe('ScheduleFlightComponent', () => {
-  let component: ScheduleFlightComponent;
-  let fixture: ComponentFixture<ScheduleFlightComponent>;
+describe('AdminManagerComponent', () => {
+  let component: AdminManagerComponent;
+  let fixture: ComponentFixture<AdminManagerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ScheduleFlightComponent ]
+      declarations: [ AdminManagerComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ScheduleFlightComponent);
+    fixture = TestBed.createComponent(AdminManagerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

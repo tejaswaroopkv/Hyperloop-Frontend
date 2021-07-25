@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-signin',
@@ -7,9 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminSigninComponent implements OnInit {
 
-  constructor() { }
+  public adminLoginForm: any = [];
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    this.setForm()
   }
+  setForm() {
+    this.adminLoginForm = this.formBuilder.group({
+      emailId: ['', [Validators.required, Validators.pattern("([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9])+\.)+([a-zA-Z]{2,4})")]],
+      password: ['', [Validators.required]],
 
+    })
+    this.resetForm();
+
+  }
+  resetForm() {
+    this.adminLoginForm.reset();
+  }
+  onSigin(){
+    
+  }
 }

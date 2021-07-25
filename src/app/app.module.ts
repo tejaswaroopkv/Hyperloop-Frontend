@@ -33,7 +33,7 @@ import { CommonService } from './services/common.service';
     MatAutocompleteModule,
     MatTabsModule
   ],
-    providers:[],
+    providers:[CommonService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import  *  as  passangercols  from  '../../../../../assets/data/passangerTableCol.json';
+import { CommonService } from '../../../../services/common.service';
+
 @Component({
   selector: 'app-payment-gateway',
   templateUrl: './payment-gateway.component.html',
@@ -8,7 +10,7 @@ import  *  as  passangercols  from  '../../../../../assets/data/passangerTableCo
 export class PaymentGatewayComponent implements OnInit {
   strikeCheckout:any = null;
 
-  constructor() { }
+  constructor(private commonService:CommonService) { }
   @Input()
   totalTicketCost:number=0;
   @Input()
@@ -25,13 +27,22 @@ export class PaymentGatewayComponent implements OnInit {
   currentCount:number=0;
   PNRDNumber:string='PNRDFLY90';
   PNRRNumber:string='PNRRFLY90';
-  passangerData:any=[];
+  coPassangers:any=[];
+  passangerData:any={};
+  primaryPassanger:any={};
+  isPaymentSuccessful:boolean=false;
+  isNavigate:boolean=false;
 
   ngOnInit(): void {
     this.stripePaymentGateway();
     console.log(this.totalTicketCost)
     console.log(this.passangersList)
+    this.sortPassangers();
     this.passangerTableCols =  (passangercols as any).default
+  }
+  sortPassangers(){
+    this.passangersList.sort((a,b) => b.isPrimary - a.isPrimary);
+    console.log(this.passangersList)
   }
   checkout(amount) {
     const strikeCheckout = (<any>window).StripeCheckout.configure({
@@ -40,15 +51,22 @@ export class PaymentGatewayComponent implements OnInit {
       token: function (stripeToken: any) {
         console.log(stripeToken)
         alert('Payment Done...Happy Flying!');
-        this.savePassangers();
-      }
+        this.isPaymentSuccessful = true;
+      },
+      onSuccess: this.savePassangers(),
+      navigate :  this.navigateToHome()
     });
   
     strikeCheckout.open({
       name: 'Eagle Pay',
       description: 'Payment Gateway',
-      amount: this.totalTicketCost*100
+      amount: this.totalTicketCost*100,
     });
+   
+    // this.savePassangers();
+    // this.navigateToHome();
+    
+    
   }
   stripePaymentGateway() {
     if(!window.document.getElementById('stripe-script')) {
@@ -73,25 +91,86 @@ export class PaymentGatewayComponent implements OnInit {
   }
 
   savePassangers(){
+    this.isPaymentSuccessful = true;
     //let PNRNumber='';
    this.currentCount = this.ticketCount ;
+   if(!this.isRoundTrip){
     this.passangersList.forEach(element => {
       this.currentCount++;
-      this.PNRDNumber = this.PNRDNumber + this.selectedSingleWay.airlineid + JSON.stringify(this.currentCount)
+      //need to replicate the same logic in java and remove here
+      if(element.isPrimary){
+      this.PNRDNumber = this.PNRDNumber + this.selectedSingleWay.airlineid + JSON.stringify(this.currentCount) + JSON.stringify(Math.floor((Math.random() * 1000) + 1))
       element.PNRDNumber = this.PNRDNumber;
-      this.passangerData = element;
+       this.primaryPassanger.name=element.passangerName;
+        this.primaryPassanger.email=element.emailId;
+        this.primaryPassanger.contact=element.contactNumber;
+        this.primaryPassanger.depaturePNR=element.PNRDNumber;
+        this.primaryPassanger.returnPNR='';
+        this.passangerData.Passanger=this.primaryPassanger;
+      }else{
+        this.PNRDNumber = this.PNRDNumber + this.selectedSingleWay.airlineid + JSON.stringify(this.currentCount) + JSON.stringify(Math.floor((Math.random() * 1000) + 1))
+        element.PNRDNumber = this.PNRDNumber;
+        this.coPassangers.push({
+              'name': element.passangerName,
+              'email':element.emailId,
+              'contact':element.contactNumber,
+              'depaturePNR':element.PNRDNumber,
+              'returnPNR':''
+        })
+      }
     });
+    this.passangerData.Passanger.CoPassangers=this.coPassangers;
+    console.log(this.passangerData);
+   }
+    
     if(this.isRoundTrip){
       this.passangersList.forEach(element => {
-        this.currentCount++;
-        this.PNRRNumber = this.PNRRNumber + this.selectedReturnWay.airlineid + JSON.stringify(this.currentCount)
-        element.PNRRNumber = this.PNRRNumber;
-        this.passangerData = element;
+       this.currentCount++;
+      //this.passangerData = element;
+        if(element.isPrimary){
+          this.PNRDNumber = this.PNRDNumber + this.selectedSingleWay.airlineid + JSON.stringify(this.currentCount) + JSON.stringify(Math.floor((Math.random() * 1000) + 1));
+          this.PNRRNumber = this.PNRRNumber + this.selectedReturnWay.airlineid + JSON.stringify(this.currentCount) + JSON.stringify(Math.floor((Math.random() * 1000) + 1));
+          element.PNRRNumber = this.PNRRNumber;
+          element.PNRDNumber=this.PNRDNumber;
+          this.primaryPassanger.name=element.passangerName;
+          this.primaryPassanger.email=element.emailId;
+          this.primaryPassanger.contact=element.contactNumber;
+          this.primaryPassanger.depaturePNR=element.PNRDNumber;
+          this.primaryPassanger.returnPNR= element.PNRRNumber;
+          this.passangerData.Passanger=this.primaryPassanger;
+        }
+        else{
+          this.PNRDNumber = this.PNRDNumber + this.selectedSingleWay.airlineid + JSON.stringify(this.currentCount) + JSON.stringify(Math.floor((Math.random() * 1000) + 1))
+          this.PNRRNumber = this.PNRRNumber + this.selectedReturnWay.airlineid + JSON.stringify(this.currentCount) + JSON.stringify(Math.floor((Math.random() * 1000) + 1));
+          element.PNRDNumber = this.PNRDNumber;
+          element.PNRRNumber = this.PNRRNumber;
+          this.coPassangers.push({
+                'name': element.passangerName,
+                'email':element.emailId,
+                'contact':element.contactNumber,
+                'depaturePNR':element.PNRDNumber,
+                'returnPNR':element.PNRRNumber
+          })
+        }
       });
+      this.passangerData.Passanger.CoPassangers=this.coPassangers;
+      console.log(this.passangerData);
     }
     this.ticketCount =this.currentCount;
     console.log(this.passangerData)
-
+    this.commonService.postData("bookedFlight",this.passangerData).subscribe(data=>{
+      console.log(data)
+    });
+    this.isNavigate=true;
+  }
+  navigateToHome(){
+    //navigate to home after saving passangers into json/db
+    console.log("navigate to home")
+  }
+  ngDocheck(){
+    if(this.isPaymentSuccessful){
+      //this.savePassangers();
+    }
   }
 
 }
