@@ -20,6 +20,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonService } from './services/common.service';
+import { LoginService } from './services/login.service';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, FooterComponent, ContactUsComponent, AboutComponent],
@@ -33,7 +34,7 @@ import { CommonService } from './services/common.service';
     MatAutocompleteModule,
     MatTabsModule
   ],
-    providers:[CommonService],
+    providers:[CommonService,LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

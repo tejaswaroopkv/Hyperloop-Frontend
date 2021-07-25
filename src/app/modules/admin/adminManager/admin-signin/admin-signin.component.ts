@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { CommonService } from 'src/app/services/common.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-signin',
@@ -9,10 +11,15 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class AdminSigninComponent implements OnInit {
 
   public adminLoginForm: any = [];
-  constructor(private formBuilder: FormBuilder) { }
+  loginCredData:any;
+  constructor(private formBuilder: FormBuilder,private commonService:CommonService,private router: Router) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.setForm()
+    this.commonService.getData("adminData").subscribe(data=>{
+      this.loginCredData = data;
+      console.log(this.loginCredData)
+    });
   }
   setForm() {
     this.adminLoginForm = this.formBuilder.group({
@@ -27,6 +34,17 @@ export class AdminSigninComponent implements OnInit {
     this.adminLoginForm.reset();
   }
   onSigin(){
-    
+   this.validateUser();
+    console.log(this.loginCredData)
+    console.log(this.adminLoginForm)
+  }
+  validateUser(){
+    if ((this.adminLoginForm.value.emailId == this.loginCredData[0].emailId) && (this.adminLoginForm.value.password == this.loginCredData[0].password)) {
+      this.commonService.setSessionValue('validUser',true)
+      this.navigateToAdminManagement();
+    }
+  }
+  navigateToAdminManagement(){
+    this.router.navigate(['DashBoard/scheduleAirline'])
   }
 }

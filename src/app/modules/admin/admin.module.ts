@@ -8,6 +8,9 @@ import { AdminManagerComponent } from './adminManager/admin-manager/admin-manage
 import { AdminMenuComponent } from './adminManager/admin-menu/admin-menu.component';
 import { ScheduleAirlineComponent } from './adminManager/schedule-airline/schedule-airline.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonService } from 'src/app/services/common.service';
+import { LoginService } from 'src/app/services/login.service';
+import { CommonGuard } from 'src/app/gaurds/common.guard';
 
 
 @NgModule({
@@ -23,6 +26,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AdminRoutingModule,
     FormsModule,
     ReactiveFormsModule
-  ]
+  ],
+  providers:[CommonService,LoginService,CommonGuard]
 })
 export class AdminModule { }

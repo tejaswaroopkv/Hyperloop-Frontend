@@ -5,17 +5,17 @@ import { Injectable } from '@angular/core';
 })
 export class LoginService {
 
-  private data: { email: string, valid: boolean } = {
-    email: "",
-    valid: false
+  private data: { emailId: string, validUser: boolean } = {
+    emailId: "",
+    validUser: false
   }
 
-  public set email(email: string) {
-    this.data.email = email;
+  public set emailId(emailId: string) {
+    this.data.emailId = emailId;
   }
 
-  public set valid(isValid: boolean) {
-    this.data.valid = isValid;
+  public set validUser(validUser: boolean) {
+    this.data.validUser = validUser;
   }
 
   public get user() {
