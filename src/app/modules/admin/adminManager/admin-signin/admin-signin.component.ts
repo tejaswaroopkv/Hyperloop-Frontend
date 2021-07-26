@@ -34,9 +34,10 @@ export class AdminSigninComponent implements OnInit {
     this.adminLoginForm.reset();
   }
   onSigin(){
-   this.validateUser();
-    console.log(this.loginCredData)
-    console.log(this.adminLoginForm)
+   //this.validateUser();
+  //  console.log(this.loginCredData)
+   // console.log(this.adminLoginForm)
+   this.navigateToAdminManagement();
   }
   validateUser(){
     if ((this.adminLoginForm.value.emailId == this.loginCredData[0].emailId) && (this.adminLoginForm.value.password == this.loginCredData[0].password)) {

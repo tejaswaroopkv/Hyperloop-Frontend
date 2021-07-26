@@ -14,10 +14,16 @@
     }
 
     
-  .subColor{
+  .login-Color{
+    box-shadow: 5px 10px 20px black;
+    color: white;
     margin-left: 40%;
     background-color: #0061A8;
     border-radius: 5px 5px;
-    color: white;
-    box-shadow: 5px 10px 20px black;
+    
+  
+}
+.adminLogin{
+    text-align:center;
+    color: brown;
 }

@@ -4,6 +4,7 @@ import { AdminSigninComponent } from './adminManager/admin-signin/admin-signin.c
 import { AdminManagerComponent } from './adminManager/admin-manager/admin-manager.component';
 import { CommonGuard } from 'src/app/gaurds/common.guard';
 import { ScheduleAirlineComponent } from './adminManager/schedule-airline/schedule-airline.component';
+import { ManageCouponsComponent } from './adminManager/manage-coupons/manage-coupons.component';
 
 
 const routes: Routes = [
@@ -16,6 +17,9 @@ const routes: Routes = [
     [
       {
         path:"scheduleAirline",component:ScheduleAirlineComponent
+      },
+      {
+        path:"manageCoupon",component:ManageCouponsComponent
       }
     ]
   }];

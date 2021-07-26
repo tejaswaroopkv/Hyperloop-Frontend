@@ -25,7 +25,7 @@
                                           
                         </tbody>
                 </table> 
-                <button type="button" [disabled] = "!this.selectedSingleWay" class="btn btn-primary"(click)="onSingleWayConfirmation()">Confirm Flight</button>
+                <button type="button" [disabled] = "this.selectedSingleWay==null" class="btn btn-primary"(click)="onSingleWayConfirmation()">Confirm Flight</button>
                               
         </div>
         <!--Tab 2-->
@@ -46,7 +46,7 @@
                                                           
                                         </tbody>
                                 </table> 
-                                <button type="button" [disabled] = "!this.selectedReturnWay" class="btn btn-primary"(click)="onReturnWayConfirmation()">Confirm Flight</button>
+                                <button type="button" [disabled] = "this.selectedReturnWay==null" class="btn btn-primary"(click)="onReturnWayConfirmation()">Confirm Flight</button>
         </div>
          <!--Tab 3-->
         <div *ngIf="this.isUserDetailsTabEnabled && !this.isPaymentTabEnabled" class = "container-fluid" >

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subscription, Observable,Subject } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,8 @@ export class CommonService {
   baseurl = " http://localhost:3000/";
   private searchFlight = new Subject<any>() ; 
   searchData:any;
+  myDate = new Date();
+  
   constructor(private httpClient: HttpClient) { 
 
   }
@@ -42,5 +45,10 @@ export class CommonService {
   getSessionValue(key:string){
     //return JSON.parse(sessionStorage.getItem(key));
     return sessionStorage.getItem(key);
+  }
+  getCurrentDate(){
+    // this.myDate=new Date();
+    // let currentDate= this.datePipe.transform(this.myDate, 'dd-MM-yyyy');
+    // return currentDate;
   }
 }

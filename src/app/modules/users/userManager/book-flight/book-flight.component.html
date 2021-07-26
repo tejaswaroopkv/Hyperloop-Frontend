@@ -1,6 +1,6 @@
 <!-- <p>book flights</p> -->
-<div class="form-container">
-        <div class="form-content">
+<div class="book-container">
+        <div class="book-form-content">
                 <form [formGroup]="flightSearchForm" (ngSubmit)="onSubmit()">
                         <div class="form-group">
                                 <!-- <label for="TripType">Trip :</label> -->
@@ -20,7 +20,7 @@
                                 </div>
                         </div>
                         <div class="form-group">
-                                <div class="row place">
+                                <div class="row travel-path">
                                         <div class="col-md-6">
                                                 <!-- <select class="custom-select" formControlName="sourcePlace">
                                                  
@@ -76,7 +76,7 @@
                                         </div>
                                 </div>
                         </div>
-                        <button type="submit" class="btn btn-info subColor">Search</button>
+                        <button type="submit" class="btn btn-info search-button-color">Search</button>
                 </form>
         </div>
 </div>

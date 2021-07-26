@@ -11,6 +11,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonService } from 'src/app/services/common.service';
 import { LoginService } from 'src/app/services/login.service';
 import { CommonGuard } from 'src/app/gaurds/common.guard';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
+import {MatSelectModule} from '@angular/material/select';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatTableModule } from "@angular/material/table";
+import { ManageCouponsComponent } from './adminManager/manage-coupons/manage-coupons.component';
 
 
 @NgModule({
@@ -19,13 +29,23 @@ import { CommonGuard } from 'src/app/gaurds/common.guard';
     AdminSigninComponent,
     AdminManagerComponent,
     AdminMenuComponent,
-    ScheduleAirlineComponent
+    ScheduleAirlineComponent,
+    ManageCouponsComponent
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatTabsModule,
+    MatTableModule
   ],
   providers:[CommonService,LoginService,CommonGuard]
 })

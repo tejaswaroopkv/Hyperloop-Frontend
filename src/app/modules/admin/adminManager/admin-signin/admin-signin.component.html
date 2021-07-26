@@ -1,5 +1,6 @@
 <div class="container-fluid login-form-container" >
     <div class="row login-form-body" >
+        <h3 class = "adminLogin">Admin</h3>
         <form [formGroup]="adminLoginForm" (ngSubmit)="onSigin()">
             <div class="form-group col-md-6">
                 <label for="emailId" >Email Id</label>
@@ -9,7 +10,7 @@
                 <label for="formGroupExampleInput2">Password</label>
                 <input type="password" class="form-control" formControlName ="password">
             </div>
-            <button type="submit" class="btn btn-info subColor">Login</button>
+            <button type="submit" class="btn btn-info login-Color">Login</button>
         </form>
     </div>
 </div>

@@ -1,1 +1,31 @@
-<p>manage-bookings works!</p>
+<div class="book-container">
+        <div class="book-form-content">
+                <form [formGroup]="manageBookingForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                                <div class="row">
+                                        <div class="col-md-6">
+                                                <input id="singleTrip" type="radio" value="1" name="tripType"
+                                                        formControlName="tripType" (change)="changeTripType($event)">
+                                                <!--(change)="changeGender($event)"-->
+                                                <label for="singleTrip">Single Trip</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                                <input id="roundTrip" type="radio" value="2" name="tripType"
+                                                        formControlName="tripType"(change)="changeTripType($event)">
+                                                <!--(change)="changeGender($event)"-->
+                                                <label class="ml-2" for="roundTrip">Round Trip</label>
+                                        </div>
+                                </div>
+                                <div class = "row">
+                                        <div class="col-md-4">
+                                                <mat-form-field class="example-full-width" appearance="fill">
+                                                        <mat-label>Enter PNR</mat-label>
+                                                        <input matInput placeholder="Depature/Return on trip"value="" formControlName="PNRNumber">
+                                                </mat-form-field>
+                                        </div>
+                                </div>
+                                <button type="submit" class="btn btn-info submit-button-color">Search</button>
+                        </div>
+                    </form>
+        </div>
+</div>

@@ -23,8 +23,8 @@ export class SearchFlightComponent implements OnInit {
   isRoundTrip:boolean=false;
   singleSearchResults:any=[];
   roundSearchResults:any=[];
-  selectedSingleWay:any = {};
-  selectedReturnWay:any = {};
+  selectedSingleWay:any = null;
+  selectedReturnWay:any = null;
   isSingleWayBookingConfirmed:boolean=false;
   isRoundTripTabEnabled:boolean=false;
   isUserDetailsTabEnabled:boolean=false;
