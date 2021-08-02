@@ -12,18 +12,21 @@ export class AdminSigninComponent implements OnInit {
 
   public adminLoginForm: any = [];
   loginCredData:any;
+  token:any;
   constructor(private formBuilder: FormBuilder,private commonService:CommonService,private router: Router) { }
 
   ngOnInit() {
     this.setForm()
-    this.commonService.getData("adminData").subscribe(data=>{
-      this.loginCredData = data;
-      console.log(this.loginCredData)
-    });
+    // this.commonService.getData("adminData").subscribe(data=>{
+    //   this.loginCredData = data;
+    //   console.log(this.loginCredData)
+    // });
+
+    
   }
   setForm() {
     this.adminLoginForm = this.formBuilder.group({
-      emailId: ['', [Validators.required, Validators.pattern("([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9])+\.)+([a-zA-Z]{2,4})")]],
+      username: ['', [Validators.required, Validators.pattern("([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9])+\.)+([a-zA-Z]{2,4})")]],
       password: ['', [Validators.required]],
 
     })
@@ -34,18 +37,30 @@ export class AdminSigninComponent implements OnInit {
     this.adminLoginForm.reset();
   }
   onSigin(){
-   this.validateUser();
+    this.commonService.postAuthentication("authenticate",this.adminLoginForm.value).subscribe(data=>{
+      this.token=data;
+      console.log(this.token.token)
+      this.commonService.setToken(this.token.token);
+      this.commonService.setSessionValue('authorization',this.token.token)
+      this.commonService.setSessionValue('validUser',true)
+      //this.validateUser();
+      this.navigateToAdminManagement();
+    });
+
+   
   //  console.log(this.loginCredData)
    // console.log(this.adminLoginForm)
    //this.navigateToAdminManagement();
   }
   validateUser(){
-    if ((this.adminLoginForm.value.emailId == this.loginCredData[0].emailId) && (this.adminLoginForm.value.password == this.loginCredData[0].password)) {
-      this.commonService.setSessionValue('validUser',true)
-      this.navigateToAdminManagement();
-    }
+    //this.navigateToAdminManagement();
+    // if ((this.adminLoginForm.value.emailId == this.loginCredData[0].emailId) && (this.adminLoginForm.value.password == this.loginCredData[0].password)) {
+    //   this.commonService.setSessionValue('validUser',true)
+    //   this.navigateToAdminManagement();
+    // }
   }
   navigateToAdminManagement(){
-    this.router.navigate(['DashBoard/scheduleAirline'])
+    // this.router.navigate(['DashBoard/scheduleAirline'])
+    this.router.navigate(['DashBoard/addAirline']);
   }
 }

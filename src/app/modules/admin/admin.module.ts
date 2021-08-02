@@ -21,6 +21,9 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatTableModule } from "@angular/material/table";
 import { ManageCouponsComponent } from './adminManager/manage-coupons/manage-coupons.component';
+import { AddAirlineComponent } from './adminManager/add-airline/add-airline.component';
+import { ManageFlightsComponent } from './adminManager/manage-flights/manage-flights.component';
+import { ManageReportsComponent } from './adminManager/manage-reports/manage-reports.component';
 
 
 @NgModule({
@@ -30,7 +33,10 @@ import { ManageCouponsComponent } from './adminManager/manage-coupons/manage-cou
     AdminManagerComponent,
     AdminMenuComponent,
     ScheduleAirlineComponent,
-    ManageCouponsComponent
+    ManageCouponsComponent,
+    AddAirlineComponent,
+    ManageFlightsComponent,
+    ManageReportsComponent
   ],
   imports: [
     CommonModule,

@@ -1,4 +1,4 @@
-<div class="book-container">
+<div  *ngIf = "!isSearched"class="book-container">
         <div class="book-form-content">
                 <form [formGroup]="manageBookingForm" (ngSubmit)="onSubmit()">
                         <div class="form-group">
@@ -29,3 +29,49 @@
                     </form>
         </div>
 </div>
+<div *ngIf = "isSearched"class="manageFlightBody">
+        <div class="manageFlightContainer">
+            <table class="table">
+                <thead>
+                    <tr class = "headerStyle">
+                        <th>Passanger Name</th>
+                        <th>Passanger Id</th>
+                        <th>PNR</th>
+                        <th>Email</th>
+                        <th>Airline Name</th>
+                        <th>Flight Code</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Price</th>
+                        <th>Depature Date</th>
+                        <th>Return Date</th>
+                        <th>Action</th>
+                    </tr>
+                 </thead>
+                 <tbody>
+                        <tr *ngFor="let flight of flightData"  [class.highlighter]="flight.isCanceled" [class.available]="!flight.isCanceled">
+                            <!-- <td><img class="logo" src="{{flight.logoUrl}}" alt="FlywayLogo" width="25" height="25"></td> -->
+                            <td>{{flight.name}}</td>
+                            <td>{{flight.passangerid}}</td>
+                            <td>{{flight.depaturePNR}}</td>
+                            <td>{{flight.email}}</td>
+                            <td>{{flight.airlineName}}</td>
+                            <td>{{flight.flightCode}}</td>
+                            <td>{{flight.sourcePlace}}</td>
+                            <td>{{flight.destinationPlace}}</td>
+                            <td>{{flight.price}}</td>
+                            <td>{{flight.departureDate}}</td>
+                            <td>{{flight.returnDate}}</td>
+                            <!-- <td>{{flight.totalSeats}}</td> -->
+                            <!-- <td>{{flight.aTime}}</td>
+                            <td>{{flight.totalSeats}}</td> -->
+                            <td>
+                                <button style="margin-left: 5px;" [disabled]="flight.isCanceled" 
+                                (click)="deleteScheduledFlight(flight)" [class.highlighterButton]="flight.isCanceled">Cancel</button>
+                            </td>
+                        </tr>
+                    </tbody>
+               </table>
+            </div>
+    </div>
+    

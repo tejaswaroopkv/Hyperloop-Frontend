@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder,Validators } from '@angular/forms';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-manage-bookings',
@@ -8,11 +9,15 @@ import { FormBuilder,Validators } from '@angular/forms';
 })
 export class ManageBookingsComponent implements OnInit {
   manageBookingForm : any;
+  isSearched:boolean=false;
+  flightData :any;
 
-  constructor(private formBuilder: FormBuilder) { }
+
+  constructor(private formBuilder: FormBuilder,private commonService:CommonService) { }
 
   ngOnInit(): void {
     this.setForm();
+    //this.loadBookedFlights();
   }
   setForm() {
     this.manageBookingForm = this.formBuilder.group({
@@ -29,6 +34,21 @@ export class ManageBookingsComponent implements OnInit {
     this.manageBookingForm.reset();
   }
   onSubmit(){
+    this.isSearched=true;
+    this.loadBookedFlights()
+  }
+  loadBookedFlights(){
+    this.commonService.getData("fetchData").subscribe(data=>{
+      this.flightData = data;
+      console.log(this.flightData)
+    });
+  }
+  deleteScheduledFlight(data:any){
+    confirm("Action will result in canceling the flight");
+    data.isCanceled=true
+    this.commonService.postData("fetchData/"+data.id,data).subscribe(res=>{
+      this.loadBookedFlights();
+    })
   }
 
 }

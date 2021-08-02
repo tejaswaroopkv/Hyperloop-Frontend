@@ -20,7 +20,7 @@ export class ManageCouponsComponent implements OnInit {
   }
   setForm() {
     this.manageCouponForm = this.formBuilder.group({
-      code: ['', Validators.required],
+      couponCode: ['', Validators.required],
       price: ['', Validators.required]
      
     })
@@ -29,23 +29,30 @@ export class ManageCouponsComponent implements OnInit {
   resetForm(){
     this.manageCouponForm.reset();
   }
-  loadCouponData(){
-    this.commonService.getData("couponData").subscribe(data=>{
-      this.couponData=data;
-      this.couponData.forEach(element => {
-        this.coupons.push(element);
-      });
-    })
-  }
+  // loadCouponData(){
+  //   this.commonService.getData("admin/couponData").subscribe(data=>{
+  //     this.couponData=data;
+  //     this.couponData.forEach(element => {
+  //       this.coupons.push(element);
+  //     });
+  //   })
+  // }
   onSubmit(){
-    let id = Math.floor((Math.random() * 100) + 1);
-    this.couponPostData.id=id
+   // let id = Math.floor((Math.random() * 100) + 1);
+    //this.couponPostData.id=id
     this.couponPostData=this.manageCouponForm.value;
     console.log(this.couponPostData);
-    this.commonService.postData("couponData",this.couponPostData).subscribe(data=>{
+    //this.commonService.postData("couponData",this.couponPostData).subscribe(data=>{
+      this.commonService.postServiceData("flight/admin/saveCoupon",this.couponPostData).subscribe(data=>{
       console.log(data)
-    });
+      this.commonService.result=data;
+     });
     this.resetForm();
   }
+  // onDataRecieved(){
+  //   if(this.commonService.result.global=='success'){
+  //     this.resetForm();
+  //   }
+  // }
 
 }

@@ -62,7 +62,7 @@ export class BookFlightComponent implements OnInit {
     });
   }
   onSubmit(){
-    debugger;
+    //debugger;
     console.log(this.flightSearchForm.value)
     //this.isEnableReturnDate=this.flightSearchForm.value.tripType=2?true:false;
     let data = JSON.parse(this.commonService.getSessionValue('airportData') as any);

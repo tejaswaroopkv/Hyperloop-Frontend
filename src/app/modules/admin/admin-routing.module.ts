@@ -5,6 +5,9 @@ import { AdminManagerComponent } from './adminManager/admin-manager/admin-manage
 import { CommonGuard } from 'src/app/gaurds/common.guard';
 import { ScheduleAirlineComponent } from './adminManager/schedule-airline/schedule-airline.component';
 import { ManageCouponsComponent } from './adminManager/manage-coupons/manage-coupons.component';
+import { AddAirlineComponent } from './adminManager/add-airline/add-airline.component';
+import { ManageFlightsComponent } from './adminManager/manage-flights/manage-flights.component';
+import { ManageReportsComponent } from './adminManager/manage-reports/manage-reports.component';
 
 
 const routes: Routes = [
@@ -19,7 +22,16 @@ const routes: Routes = [
         path:"scheduleAirline",component:ScheduleAirlineComponent
       },
       {
+        path:"manageFlight",component:ManageFlightsComponent
+      },
+      {
         path:"manageCoupon",component:ManageCouponsComponent
+      },
+      {
+        path:"addAirline",component:AddAirlineComponent
+      },
+      {
+        path:"manageReports",component:ManageReportsComponent
       }
     ]
   }];
