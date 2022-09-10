@@ -22,4 +22,5 @@ describe('ManageFlightsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
 });

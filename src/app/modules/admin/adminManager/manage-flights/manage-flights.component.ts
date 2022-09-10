@@ -16,10 +16,11 @@ export class ManageFlightsComponent implements OnInit {
 
   }
   loadSheduledFlights(){
-    this.commonService.getServiceData("flight/admin/getScheduledFlightData").subscribe(data=>{
+    this.commonService.getCommonServiceData("common/flight/getScheduledFlightData").subscribe(data=>{
       this.flightData = data['data'];
       console.log(this.flightData)
     });
+    
   }
   deleteScheduledFlight(data:any){
     confirm("Action will result in blocking the flight");
@@ -27,7 +28,7 @@ export class ManageFlightsComponent implements OnInit {
     // this.commonService.putData("flightData/"+data.id,data).subscribe(res=>{
     //   this.loadSheduledFlights();
     // })
-    this.commonService.postServiceData("flight/admin/addFlight",data).subscribe(res=>{
+    this.commonService.postServiceData("admin/flight/addFlight",data).subscribe(res=>{
       this.loadSheduledFlights();
       console.log(res);
     })

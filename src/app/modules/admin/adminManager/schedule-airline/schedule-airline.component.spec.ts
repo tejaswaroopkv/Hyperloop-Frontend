@@ -22,4 +22,5 @@ describe('ScheduleAirlineComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
 });

@@ -31,7 +31,7 @@ export class BookFlightComponent implements OnInit {
       tripType: ['', Validators.required],
       sourcePlace: ['', [Validators.required]],
       destinationPlace: ['', Validators.required],
-      depatureDate: ['', Validators.required],
+      departureDate: ['', Validators.required],
       returnDate: [''],
       sourcePlaceId:[],
       destinationPlaceId:[]
@@ -42,8 +42,8 @@ export class BookFlightComponent implements OnInit {
   }
   fetchAirportData(){
     //this.airportList = (airportListData as any).default
-    this.commonService.getData("airportData").subscribe(res=>{
-      this.airportList = res;
+    this.commonService.getCommonServiceData("common/flight/getAirportData").subscribe(res=>{
+      this.airportList = res['data'];
       this.commonService.setSessionValue('airportData',this.airportList);
      
     });
@@ -84,6 +84,7 @@ export class BookFlightComponent implements OnInit {
     console.log(this.isEnableReturnDate)
   }
   resetForm(){
+    
     this.flightSearchForm.reset();
   }
 

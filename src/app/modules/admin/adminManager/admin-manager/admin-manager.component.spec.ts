@@ -22,4 +22,5 @@ describe('AdminManagerComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
 });

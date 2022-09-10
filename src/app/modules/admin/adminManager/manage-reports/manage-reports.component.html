@@ -5,8 +5,8 @@
             <thead>
                 <tr class = "headerStyle">
                     <th>Logo</th>
-                    <th>Airline Name</th>
-                    <th>Flight Code</th>
+                    <th>Hyperline Name</th>
+                    <th>HyperFly Code</th>
                     <th>From</th>
                     <th>To</th>
                     <th>Price</th>
@@ -15,6 +15,7 @@
                     <th>Total Seats</th>
                 </tr>
              </thead>
+             
              <tbody>
                     <tr *ngFor="let flight of flightData"  [class.highlighter]="!flight.isAvailable" [class.available]="flight.isAvailable">
                         <td><img class="logo" src="{{flight.logoUrl}}" alt="FlywayLogo" width="25" height="25"></td>

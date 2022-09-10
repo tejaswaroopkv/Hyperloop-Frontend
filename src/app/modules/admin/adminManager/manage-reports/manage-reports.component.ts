@@ -14,10 +14,11 @@ export class ManageReportsComponent implements OnInit {
     this.loadSheduledFlights();
   }
   loadSheduledFlights(){
-    this.commonService.getServiceData("admin/getScheduledFlightData").subscribe(data=>{
+    this.commonService.getCommonServiceData("common/flight/getScheduledFlightData").subscribe(data=>{
       this.flightData = data['data'];
       console.log(this.flightData)
     });
+    
   }
 
 }

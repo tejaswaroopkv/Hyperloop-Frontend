@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import  *  as  passangercols  from  '../../../../../assets/data/passangerTableCol.json';
 import { CommonService } from '../../../../services/common.service';
 import { Router } from '@angular/router';
@@ -23,22 +23,32 @@ export class PaymentGatewayComponent implements OnInit {
   @Input()
   isRoundTrip:boolean=false;
 
+  @Output() 
+  ticketData = new EventEmitter();
+  @Output() 
+  paymentStatus = new EventEmitter();
+
   passangerTableCols:any;
   ticketCount:number=0;
   currentCount:number=0;
   PNRDNumber:string='PNRDFLY90';
   PNRRNumber:string='PNRRFLY90';
-  coPassangers:any=[];
+  coPassengers:any=[];
   passangerData:any={};
-  primaryPassanger:any={};
+  //primaryPassanger:any={};
   isPaymentSuccessful:boolean=false;
   isNavigate:boolean=false;
-  discountCoupon:any;
+  discountCouponId:any;
+  discountCouponCode:any;
+  discountedPrice:any
   couponData:any;
   discountCost:number=0;
+  eachTicketCost:number=0;
+  passengers:any=[];
+  reversePassengers:any=[];
+  responseData:any;
 
   ngOnInit(): void {
-    //this.stripePaymentGateway();
     this.loadCouponData();
     this.discountCost = this.totalTicketCost;
     console.log(this.totalTicketCost)
@@ -47,159 +57,207 @@ export class PaymentGatewayComponent implements OnInit {
     this.passangerTableCols =  (passangercols as any).default
   }
   loadCouponData(){
-    this.commonService.getData("couponData").subscribe(data=>{
-      this.couponData=data;
+    this.commonService.getCommonServiceData("common/flight/getCouponData").subscribe(data=>{
+      this.couponData=data['data'];
       console.log(this.couponData)
     });
+    
   }
   sortPassangers(){
     this.passangersList.sort((a,b) => b.isPrimary - a.isPrimary);
     console.log(this.passangersList)
   }
   applyCoupon(){
-    console.log(this.discountCoupon);
+    console.log(this.discountCouponId);
     let price = '';
     let cost=0;
-  price = this.discountCoupon;
-  price = price.replace('$', '')
-  cost =+price; 
-  this.discountCost = this.totalTicketCost-cost;
-  //this.discountCost = this.totalTicketCost;
+    this.couponData.forEach(element => {
+      if(element.id==this.discountCouponId){
+        this.discountCouponCode = element.couponCode
+        this.discountedPrice = element.price;
+        price = element.price;
+        price = price.replace('$', '')
+        cost =+price; 
+        this.discountCost = this.totalTicketCost-cost;
+      }
+    });
+   
 
   }
   checkout(amount) {
-    // const strikeCheckout = (<any>window).StripeCheckout.configure({
-    //   key: 'pk_test_51JGzVmSIftclJTRE1vsqXz71E4PtNelzE0MwkgJZoBYBt8tWWrhr6EOxXr3NhYumsftWb3q4hQAORWP9fYUJcwZp00JIXSYNAY',
-    //   locale: 'auto',
-    //   token: function (stripeToken: any) {
-    //     console.log(stripeToken)
-    //     alert('Payment Done...Happy Flying!');
-    //     this.savePassangers();
-    //     this.navigateToHome();
-    //     this.isPaymentSuccessful = true;
-    //   },
-     // onSuccess: this.savePassangers(),
-      //navigate :  this.savePassangers(),
-    // });
-  
-    // strikeCheckout.open({
-    //   name: 'Eagle Pay',
-    //   description: 'Payment Gateway',
-    //   amount: this.totalTicketCost*100,
-    // });
-   
     this.savePassangers();
-   
-    
-    
   }
-  // stripePaymentGateway() {
-  //   if(!window.document.getElementById('stripe-script')) {
-  //     const scr = window.document.createElement("script");
-  //     scr.id = "stripe-script";
-  //     scr.type = "text/javascript";
-  //     scr.src = "https://checkout.stripe.com/checkout.js";
-
-  //     scr.onload = () => {
-  //       this.strikeCheckout = (<any>window).StripeCheckout.configure({
-  //         key: 'pk_test_51JGzVmSIftclJTRE1vsqXz71E4PtNelzE0MwkgJZoBYBt8tWWrhr6EOxXr3NhYumsftWb3q4hQAORWP9fYUJcwZp00JIXSYNAY',
-  //         locale: 'auto',
-  //         token: function (token: any) {
-  //           console.log(token)
-  //           alert('Payment successfull!');
-  //         }
-  //       });
-  //     }
-        
-  //     window.document.body.appendChild(scr);
-  //   }
-  // }
+  
 
   savePassangers(){
     var $:any;
-   
-    //let PNRNumber='';
+   console.log(this.selectedSingleWay)
+   console.log(this.selectedReturnWay)
    this.currentCount = this.ticketCount ;
+   this.eachTicketCost = this.discountCost/this.passangersList.length;
    if(!this.isRoundTrip){
     let random = JSON.stringify(Math.floor((Math.random() * 1000) + 1));
     this.passangersList.forEach(element => {
       this.currentCount++;
+      let passengerDTO:any={};
       //need to replicate the same logic in java and remove here
       if(element.isPrimary){
-      this.PNRDNumber = this.PNRDNumber + this.selectedSingleWay.airlineid + JSON.stringify(this.currentCount) + random;
-      element.PNRDNumber = this.PNRDNumber;
-      this.primaryPassanger.passangerid=JSON.stringify(this.currentCount) + JSON.stringify(Math.floor((Math.random() * 1000) + 1))
-       this.primaryPassanger.name=element.passangerName;
-        this.primaryPassanger.email=element.emailId;
-        this.primaryPassanger.contact=element.contactNumber;
-        this.primaryPassanger.depaturePNR=element.PNRDNumber;
-        this.primaryPassanger.returnPNR='';
-        this.passangerData.id=JSON.stringify(this.currentCount) + JSON.stringify(Math.floor((Math.random() * 1000) + 1))
-        this.passangerData.passangerInfo =this.primaryPassanger;
-      }else{
-        this.PNRDNumber = this.PNRDNumber + this.selectedSingleWay.airlineid + JSON.stringify(this.currentCount) + random;
+        this.PNRDNumber = this.PNRDNumber + this.selectedSingleWay.airlineId + JSON.stringify(this.currentCount) + random;
         element.PNRDNumber = this.PNRDNumber;
-        this.coPassangers.push({
-              'passangerid':JSON.stringify(this.currentCount) + JSON.stringify(Math.floor((Math.random() * 1000) + 1)),
-              'name': element.passangerName,
-              'email':element.emailId,
-              'contact':element.contactNumber,
-              'depaturePNR':element.PNRDNumber,
-              'returnPNR':''
-        })
+      //this.primaryPassanger.passangerId=JSON.stringify(this.currentCount) + JSON.stringify(Math.floor((Math.random() * 1000) + 1))
+        passengerDTO.name=element.passangerName;
+        passengerDTO.age=element.age
+        passengerDTO.airlineId = this.selectedSingleWay.airlineId
+        passengerDTO.airlineName=this.selectedSingleWay.airlineName;
+        passengerDTO.couponId =this.discountCouponId
+        passengerDTO.couponCode = this.discountCouponCode
+        passengerDTO.couponPrice = this.discountedPrice
+        passengerDTO.flightCodeId = this.selectedSingleWay.flightCodeId
+        passengerDTO.flightCode = this.selectedSingleWay.flightCode
+        passengerDTO.email=element.emailId;
+        passengerDTO.contact=element.contactNumber;
+        passengerDTO.tripType = 1
+        passengerDTO.departurePNR=this.PNRDNumber;
+        passengerDTO.returnPNR='NA';
+        passengerDTO.price =JSON.stringify(this.eachTicketCost)+'$'
+        passengerDTO.isCancelled=false;
+        passengerDTO.sourcePlace = this.selectedSingleWay.sourcePlace;
+        passengerDTO.destinationPlace = this.selectedSingleWay.destinationPlace;
+        passengerDTO.srcid = this.selectedSingleWay.srcid;
+        passengerDTO.destid = this.selectedSingleWay.destid;
+        passengerDTO.isPrimary=true;
+
+        this.passengers.push(passengerDTO)
+        //this.passangerData.id=JSON.stringify(this.currentCount) + JSON.stringify(Math.floor((Math.random() * 1000) + 1))
+        //this.passangerData.passengerInfo =this.primaryPassanger;
+      }else{
+        this.PNRDNumber='PNRDFLY90';
+        this.PNRDNumber = this.PNRDNumber + this.selectedSingleWay.airlineId + JSON.stringify(this.currentCount) + random;
+        element.PNRDNumber = this.PNRDNumber;
+        passengerDTO.name=element.passangerName;
+        passengerDTO.age=element.age
+        passengerDTO.airlineId = this.selectedSingleWay.airlineId
+        passengerDTO.airlineName=this.selectedSingleWay.airlineName;
+        passengerDTO.couponId =this.discountCouponId
+        passengerDTO.couponCode = this.discountCouponCode
+        passengerDTO.couponPrice = this.discountedPrice
+        passengerDTO.flightCodeId = this.selectedSingleWay.flightCodeId
+        passengerDTO.flightCode = this.selectedSingleWay.flightCode
+        passengerDTO.email=element.emailId;
+        passengerDTO.contact=element.contactNumber;
+        passengerDTO.tripType = 1
+        passengerDTO.departurePNR=this.PNRDNumber;
+        passengerDTO.returnPNR='NA';
+        passengerDTO.price =JSON.stringify(this.eachTicketCost)+'$'
+        passengerDTO.isCancelled=false;
+        passengerDTO.sourcePlace = this.selectedSingleWay.sourcePlace;
+        passengerDTO.destinationPlace = this.selectedSingleWay.destinationPlace;
+        passengerDTO.srcid = this.selectedSingleWay.srcid;
+        passengerDTO.destid = this.selectedSingleWay.destid;
+        passengerDTO.isPrimary=false;
+        this.passengers.push(passengerDTO)
       }
     });
-    this.passangerData.passangerInfo.CoPassangers=this.coPassangers;
-    console.log(this.passangerData);
+    console.log(this.passengers);
    }
     
     if(this.isRoundTrip){
       let random = JSON.stringify(Math.floor((Math.random() * 1000) + 1));
       this.passangersList.forEach(element => {
        this.currentCount++;
+       let passengerDTO:any={};
       //this.passangerData = element;
         if(element.isPrimary){
-          this.PNRDNumber = this.PNRDNumber + this.selectedSingleWay.airlineid + JSON.stringify(this.currentCount) + random;
-          this.PNRRNumber = this.PNRRNumber + this.selectedReturnWay.airlineid + JSON.stringify(this.currentCount) + random;
+          this.PNRDNumber = this.PNRDNumber + this.selectedSingleWay.airlineId + JSON.stringify(this.currentCount) + random;
+          this.PNRRNumber = this.PNRRNumber + this.selectedReturnWay.airlineId + JSON.stringify(this.currentCount) + random;
           element.PNRRNumber = this.PNRRNumber;
           element.PNRDNumber=this.PNRDNumber;
-          this.primaryPassanger.passangerid=JSON.stringify(this.currentCount) + JSON.stringify(Math.floor((Math.random() * 1000) + 1))
-          this.primaryPassanger.name=element.passangerName;
-          this.primaryPassanger.email=element.emailId;
-          this.primaryPassanger.contact=element.contactNumber;
-          this.primaryPassanger.depaturePNR=element.PNRDNumber;
-          this.primaryPassanger.returnPNR= element.PNRRNumber;
-          this.passangerData.id= JSON.stringify(this.currentCount) + JSON.stringify(Math.floor((Math.random() * 1000) + 1))
-          this.passangerData.passangerInfo = this.primaryPassanger;
+          passengerDTO.name=element.passangerName;
+          passengerDTO.age=element.age
+          passengerDTO.airlineId = this.selectedSingleWay.airlineId
+          passengerDTO.airlineName=this.selectedSingleWay.airlineName;
+          passengerDTO.couponId =this.discountCouponId
+          passengerDTO.couponCode = this.discountCouponCode
+          passengerDTO.couponPrice = this.discountedPrice
+          passengerDTO.flightCodeId = this.selectedSingleWay.flightCodeId
+          passengerDTO.flightCode = this.selectedSingleWay.flightCode
+          passengerDTO.email=element.emailId;
+          passengerDTO.contact=element.contactNumber;
+          passengerDTO.tripType = 1
+          passengerDTO.departurePNR=this.PNRDNumber ;
+          passengerDTO.returnPNR= this.PNRRNumber;
+          passengerDTO.price =JSON.stringify(this.eachTicketCost)+'$'
+          passengerDTO.isCancelled=false;
+          passengerDTO.sourcePlace = this.selectedSingleWay.sourcePlace;
+          passengerDTO.destinationPlace = this.selectedSingleWay.destinationPlace;
+          passengerDTO.srcid = this.selectedSingleWay.srcid;
+          passengerDTO.destid = this.selectedSingleWay.destid;
+          passengerDTO.isPrimary=true;
+          this.passengers.push(passengerDTO)
         }
         else{
-          this.PNRDNumber = this.PNRDNumber + this.selectedSingleWay.airlineid + JSON.stringify(this.currentCount) + random;
-          this.PNRRNumber = this.PNRRNumber + this.selectedReturnWay.airlineid + JSON.stringify(this.currentCount) + random;
+          this.PNRDNumber='PNRDFLY90'
+          this.PNRRNumber='PNRRFLY90'
+          this.PNRDNumber = this.PNRDNumber + this.selectedSingleWay.airlineId + JSON.stringify(this.currentCount) + random;
+          this.PNRRNumber = this.PNRRNumber + this.selectedReturnWay.airlineId + JSON.stringify(this.currentCount) + random;
           element.PNRDNumber = this.PNRDNumber;
           element.PNRRNumber = this.PNRRNumber;
-          this.coPassangers.push({
-                'passangerid':JSON.stringify(this.currentCount) + JSON.stringify(Math.floor((Math.random() * 1000) + 1)),
-                'name': element.passangerName,
-                'email':element.emailId,
-                'contact':element.contactNumber,
-                'depaturePNR':element.PNRDNumber,
-                'returnPNR':element.PNRRNumber
-          })
+          passengerDTO.name=element.passangerName;
+          passengerDTO.age=element.age
+          passengerDTO.airlineId = this.selectedSingleWay.airlineId
+          passengerDTO.airlineName=this.selectedSingleWay.airlineName;
+          passengerDTO.couponId =this.discountCouponId
+          passengerDTO.couponCode = this.discountCouponCode
+          passengerDTO.couponPrice = this.discountedPrice
+          passengerDTO.flightCodeId = this.selectedSingleWay.flightCodeId
+          passengerDTO.flightCode = this.selectedSingleWay.flightCode
+          passengerDTO.email=element.emailId;
+          passengerDTO.contact=element.contactNumber;
+          passengerDTO.tripType = 1
+          passengerDTO.departurePNR=this.PNRDNumber;
+          passengerDTO.returnPNR=this.PNRRNumber;
+          passengerDTO.price =JSON.stringify(this.eachTicketCost)+'$'
+          passengerDTO.isCancelled=false;
+          passengerDTO.sourcePlace = this.selectedSingleWay.sourcePlace;
+          passengerDTO.destinationPlace = this.selectedSingleWay.destinationPlace;
+          passengerDTO.srcid = this.selectedSingleWay.srcid;
+          passengerDTO.destid = this.selectedSingleWay.destid;
+          passengerDTO.isPrimary=false;
+          this.passengers.push(passengerDTO)
+         
         }
       });
-      this.passangerData.passangerInfo.CoPassangers=this.coPassangers;
-      console.log(this.passangerData);
+     
     }
     this.ticketCount =this.currentCount;
     console.log(this.passangerData)
-    this.commonService.postData("bookedFlight",this.passangerData).subscribe(data=>{
+    console.log(this.passengers)
+    //this.reverseSortPassangers();
+    // this.passengers.forEach(element => {
+    //   this.reversePassengers.push(element)
+    // });
+    //this.reversePassengers = this.passengers.reverse();
+
+
+    this.commonService.postUserServiceData("user/flight/bookFlight",this.passengers).subscribe(data=>{
       console.log(data)
+      this.responseData = data;
+      this.isPaymentSuccessful = true;
+      if(this.responseData){
+        //this.navigateToHome();
+        this.ticketData.emit(this.responseData)
+        this.paymentStatus.emit(this.isPaymentSuccessful)
+
+      }
     });
     
-    this.isPaymentSuccessful = true;
-    $(".showtoast").click(function(){
-      $('.toast').toast('show');
-      })
+    // $(".showtoast").click(function(){
+    //   $('.toast').toast('show');
+    //   })
+  }
+  reverseSortPassangers(){
+    this.passengers.sort((a,b) => a.isPrimary - b.isPrimary);
+    console.log(this.passangersList)
   }
   navigateToHome(){
     //navigate to home after saving passangers into json/db

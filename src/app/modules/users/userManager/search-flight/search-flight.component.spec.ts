@@ -22,4 +22,5 @@ describe('SearchFlightComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
 });

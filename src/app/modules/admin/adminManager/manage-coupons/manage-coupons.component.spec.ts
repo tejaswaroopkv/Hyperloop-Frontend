@@ -22,4 +22,5 @@ describe('ManageCouponsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
 });

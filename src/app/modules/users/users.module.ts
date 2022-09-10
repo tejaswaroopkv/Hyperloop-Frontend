@@ -20,6 +20,7 @@ import { UserMenubarComponent } from './userManager/user-menubar/user-menubar.co
 import { UserManagerComponent } from './userManager/user-manager/user-manager.component';
 import {MatTableModule } from "@angular/material/table";
 import { PaymentGatewayComponent } from './userManager/payment-gateway/payment-gateway.component';
+import { TicketDetailsComponent } from './userManager/ticket-details/ticket-details.component';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { PaymentGatewayComponent } from './userManager/payment-gateway/payment-g
     UserMenubarComponent,
     UserManagerComponent,
     PaymentGatewayComponent,
+    TicketDetailsComponent,
   ],
   imports: [CommonModule,UsersRoutingModule,FormsModule, 
     ReactiveFormsModule,

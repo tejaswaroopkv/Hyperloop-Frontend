@@ -43,10 +43,11 @@ export class ManageCouponsComponent implements OnInit {
     this.couponPostData=this.manageCouponForm.value;
     console.log(this.couponPostData);
     //this.commonService.postData("couponData",this.couponPostData).subscribe(data=>{
-      this.commonService.postServiceData("flight/admin/saveCoupon",this.couponPostData).subscribe(data=>{
+      this.commonService.postServiceData("admin/flight/saveCoupon",this.couponPostData).subscribe(data=>{
       console.log(data)
       this.commonService.result=data;
      });
+     
     this.resetForm();
   }
   // onDataRecieved(){

@@ -1,4 +1,5 @@
 <div class = "container-fluid payment-form">
+        
         <!-- <p>payment-gateway works!</p> -->
         <div class = "row">
                 <table class="table thead-dark">
@@ -10,6 +11,7 @@
                                 <tbody>
                                          <tr class="rowContent" *ngFor="let col of passangersList">
                                                 <td class = "passangerGridContentColor">{{col.passangerName}}</td> 
+                                                <td class = "passangerGridContentColor">{{col.age}}</td>
                                                 <td class = "passangerGridContentColor">{{col.emailId}}</td>
                                                 <td class = "passangerGridContentColor">{{col.contactNumber}}</td>
                                                 <!-- <td class = "passangerGridContentColor">{{col.isPrimary?'Yes':'No'}}</td> -->
@@ -18,25 +20,26 @@
                                 </tbody>
                         </table> 
 
+
         </div>   
         <div class="row">
                 <div class = "col-md-4">
                                 <label class="ml-2" for="DiscountCode">Discount Code</label>
-                                <select class="custom-select" (change)="applyCoupon()" [(ngModel)]="discountCoupon">
+                                <select class="custom-select" (change)="applyCoupon()" [(ngModel)]="discountCouponId">
                                                 <!-- <option selected>Discount Code</option> -->
-                                                <option *ngFor="let data of couponData" [value]="data.price" >{{data.code}}</option>
+                                                <option *ngFor="let data of couponData" [value]="data.id" >{{data.couponCode}}</option>
                                 </select>
                 </div>
                 <div class="col-md-4 mb-3 subColor">
                   <button (click)="checkout(this.totalTicketCost)" class="btn btn-primary btn-block">{{'PAY ' + this.discountCost + ' $'}}</button>
                 </div>
         </div>
-        <div class = "row toastBox">
+        <!-- <div class = "row toastBox">
                 <div *ngIf = "this.isPaymentSuccessful==true" class="btn btn-success showtoast" role="alert" aria-live="assertive" aria-atomic="true">
                         <div class="toast-header">
-                          <strong class="mr-auto">{{this.passangerData.passangerInfo.depaturePNR}}</strong>
+                          <strong class="mr-auto">{{this.passangerData.passengerInfo.departurePNR}}</strong>
                           <br/>
-                          <strong *ngIf="this.passangerData.passangerInfo.returnPNR!=''" class="mr-auto">{{this.passangerData.passangerInfo.returnPNR}}</strong>
+                          <strong *ngIf="this.passangerData.passangerInfo.returnPNR!=''" class="mr-auto">{{this.passangerData.passengerInfo.returnPNR}}</strong>
                           <button type="button" class="ml-2 mb-1 close" (click) = "navigateToHome()"data-dismiss="toast" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
@@ -45,7 +48,7 @@
                          Booking is Successfull!Thanks for using flyway
                         </div>
                 </div>
-        </div>
+        </div> -->
        
 </div>
 

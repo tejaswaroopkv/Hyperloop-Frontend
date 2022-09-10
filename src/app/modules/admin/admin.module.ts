@@ -24,6 +24,7 @@ import { ManageCouponsComponent } from './adminManager/manage-coupons/manage-cou
 import { AddAirlineComponent } from './adminManager/add-airline/add-airline.component';
 import { ManageFlightsComponent } from './adminManager/manage-flights/manage-flights.component';
 import { ManageReportsComponent } from './adminManager/manage-reports/manage-reports.component';
+import { PassengerBookingsComponent } from './adminManager/passenger-bookings/passenger-bookings.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { ManageReportsComponent } from './adminManager/manage-reports/manage-rep
     ManageCouponsComponent,
     AddAirlineComponent,
     ManageFlightsComponent,
-    ManageReportsComponent
+    ManageReportsComponent,
+    PassengerBookingsComponent
   ],
   imports: [
     CommonModule,
@@ -54,5 +56,7 @@ import { ManageReportsComponent } from './adminManager/manage-reports/manage-rep
     MatTableModule
   ],
   providers:[CommonService,LoginService,CommonGuard]
+  
 })
+
 export class AdminModule { }

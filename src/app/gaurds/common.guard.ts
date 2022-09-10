@@ -16,7 +16,8 @@ export class CommonGuard implements CanActivate {
     
       if(this.commonService.getSessionValue('validUser') == 'true'){
         return true;
-      }else{
+      }
+      else{
         this.router.navigate(['admin/login']);
         return false;
       }

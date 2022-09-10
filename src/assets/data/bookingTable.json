@@ -6,12 +6,12 @@
             "displayName":"Logo"
             },
             {
-                "columnName":"airlinename",
+                "columnName":"airlineName",
                 "type":"text",
-                "displayName":"Airline Name"
+                "displayName":"Hyperline Name"
             },
             {
-                    "columnName":"depatureDate",
+                    "columnName":"departureDate",
                     "type":"text",
                     "displayName":"Fly Date"
             },

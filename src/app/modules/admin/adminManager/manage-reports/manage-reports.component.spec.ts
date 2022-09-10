@@ -22,4 +22,5 @@ describe('ManageReportsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
 });

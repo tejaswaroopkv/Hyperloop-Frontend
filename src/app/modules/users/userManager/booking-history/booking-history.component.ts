@@ -12,8 +12,10 @@ export class BookingHistoryComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,private commonService:CommonService) { }
   isSearched:boolean=false;
   flightData :any;
+  email:any;
 
   ngOnInit(): void {
+    
     this.setForm();
   }
   setForm() {
@@ -29,12 +31,18 @@ export class BookingHistoryComponent implements OnInit {
   }
   onSubmit(){
     this.isSearched=true;
+    this.email = this.bookingHistroyForm.value.emailid
     this.loadBookedFlights()
   }
   loadBookedFlights(){
-    this.commonService.getData("fetchHistroyData").subscribe(data=>{
+    // this.commonService.getData("fetchHistroyData").subscribe(data=>{
+    //   this.flightData = data;
+    //   console.log(this.flightData)
+    // });
+    this.commonService.getUserServiceData("user/flight/getBookingHistroy?email="+this.email).subscribe(data=>{
       this.flightData = data;
       console.log(this.flightData)
+      this.flightData = this.flightData['data']
     });
   }
 }

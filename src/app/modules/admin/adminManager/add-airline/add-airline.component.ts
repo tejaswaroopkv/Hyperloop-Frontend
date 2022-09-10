@@ -32,13 +32,14 @@ export class AddAirlineComponent implements OnInit {
   onSubmit(){
     debugger;
     console.log(this.airlineform.value);
-    this.commonService.postServiceData("flight/admin/saveAirline",this.airlineform.value).subscribe(data=>{
+    this.commonService.postServiceData("admin/flight/saveAirline",this.airlineform.value).subscribe(data=>{
       console.log(data)
       this.result=data;
       if(this.result.global=='success'){
         this.resetForm();
       }
     });
+    
   }
 
 }

@@ -8,6 +8,7 @@ import { ManageCouponsComponent } from './adminManager/manage-coupons/manage-cou
 import { AddAirlineComponent } from './adminManager/add-airline/add-airline.component';
 import { ManageFlightsComponent } from './adminManager/manage-flights/manage-flights.component';
 import { ManageReportsComponent } from './adminManager/manage-reports/manage-reports.component';
+import { PassengerBookingsComponent } from './adminManager/passenger-bookings/passenger-bookings.component';
 
 
 const routes: Routes = [
@@ -19,22 +20,28 @@ const routes: Routes = [
     canActivate:[CommonGuard],children:
     [
       {
-        path:"scheduleAirline",component:ScheduleAirlineComponent
+        path:"scheduleHyperline",component:ScheduleAirlineComponent
       },
       {
-        path:"manageFlight",component:ManageFlightsComponent
+        path:"manageHyperFlyway",component:ManageFlightsComponent
       },
       {
         path:"manageCoupon",component:ManageCouponsComponent
       },
       {
-        path:"addAirline",component:AddAirlineComponent
+        path:"addHyperline",component:AddAirlineComponent
       },
       {
         path:"manageReports",component:ManageReportsComponent
+      },
+      
+      {
+        path:"passengerBookings",component:PassengerBookingsComponent
       }
     ]
+    
   }];
+  
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -17,6 +17,7 @@ export class AdminSigninComponent implements OnInit {
 
   ngOnInit() {
     this.setForm()
+    this.commonService.destroySession();
     // this.commonService.getData("adminData").subscribe(data=>{
     //   this.loginCredData = data;
     //   console.log(this.loginCredData)
@@ -37,15 +38,17 @@ export class AdminSigninComponent implements OnInit {
     this.adminLoginForm.reset();
   }
   onSigin(){
-    this.commonService.postAuthentication("authenticate",this.adminLoginForm.value).subscribe(data=>{
-      this.token=data;
+   this.commonService.postAuthentication("admin/flight/authenticate",this.adminLoginForm.value).subscribe(data=>{
+    //this.commonService.postAuthentication("authenticate",this.adminLoginForm.value).subscribe(data=>{  
+    this.token=data;
       console.log(this.token.token)
-      this.commonService.setToken(this.token.token);
+      //this.commonService.setToken(this.token.token);
       this.commonService.setSessionValue('authorization',this.token.token)
       this.commonService.setSessionValue('validUser',true)
       //this.validateUser();
       this.navigateToAdminManagement();
     });
+
 
    
   //  console.log(this.loginCredData)
@@ -61,6 +64,7 @@ export class AdminSigninComponent implements OnInit {
   }
   navigateToAdminManagement(){
     // this.router.navigate(['DashBoard/scheduleAirline'])
-    this.router.navigate(['DashBoard/addAirline']);
+    this.router.navigate(['DashBoard/addHyperline']);
   }
+  
 }

@@ -30,9 +30,10 @@ export class ScheduleAirlineComponent implements OnInit {
     this.loadAirlineData();
     this.loadAirportData();
   }
+  
   loadAirlineData(){
     //this.commonService.getData("airlineInfo").subscribe(data=>{
-    this.commonService.getServiceData("flight/admin/getAirlineInfo").subscribe(data=>{
+    this.commonService.getCommonServiceData("common/flight/getAirlineInfo").subscribe(data=>{
       this.airlineData = data['data'];
       this.airlineData.forEach(element => {
         this.airlineInfo.push({"label":element.airlineName,"value":element.airlineId});
@@ -44,7 +45,7 @@ export class ScheduleAirlineComponent implements OnInit {
   }
   loadAirportData(){
     //this.airportData = JSON.parse(this.commonService.getSessionValue('airportData') as any);
-    this.commonService.getServiceData("flight/admin/getAirportData").subscribe(data=>{
+    this.commonService.getCommonServiceData("common/flight/getAirportData").subscribe(data=>{
       this.airportData = data['data'];
     });
     console.log(this.airportData);
@@ -101,7 +102,7 @@ export class ScheduleAirlineComponent implements OnInit {
     this.prepareScheduleFightPostBody.isAvailable = true; 
     this.prepareScheduleFightPostBody.totalSeats = this.scheduleFlightForm.value.totalSeats;
     console.log(this.prepareScheduleFightPostBody)
-    this.commonService.postServiceData("flight/admin/addFlight",this.prepareScheduleFightPostBody).subscribe(data=>{
+    this.commonService.postServiceData("admin/flight/addFlight",this.prepareScheduleFightPostBody).subscribe(data=>{
       console.log(data)
     });
     this.resetForm();

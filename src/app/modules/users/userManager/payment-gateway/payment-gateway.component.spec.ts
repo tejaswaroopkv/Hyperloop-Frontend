@@ -22,4 +22,5 @@ describe('PaymentGatewayComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
 });

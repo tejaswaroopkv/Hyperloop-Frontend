@@ -38,6 +38,9 @@ export class SearchFlightComponent implements OnInit {
   isPrimaryContactPresent:boolean=false;
   totalTicketCost:number=0;
   isremoveAllTabs:boolean=false;
+  enableTicketTab:boolean=false;
+  statusVal:boolean=false;
+  ticketData:any;
   ngOnInit() {
    this.setForm();
    this.flightSearchFormData();
@@ -51,6 +54,7 @@ export class SearchFlightComponent implements OnInit {
       passangerName: ['', Validators.required],
       emailId: ['', [Validators.required]],
       contactNumber: ['', Validators.required],
+      age:['',Validators.required],
       isPrimary :[false]
     })
     this.resetForm();
@@ -59,8 +63,8 @@ export class SearchFlightComponent implements OnInit {
     this.searchCriteria = JSON.parse(this.commonService.getSessionValue('searchFlights') as any);
   }
   fetchAirportData(){
-    this.commonService.getData("flightData").subscribe(data=>{
-      this.scheduledFlights=data
+    this.commonService.getCommonServiceData("common/flight/getScheduledFlightData").subscribe(data=>{
+      this.scheduledFlights=data['data']
       if(this.scheduledFlights.length>0){
         this.filterSearchResults();
       }
@@ -80,20 +84,23 @@ export class SearchFlightComponent implements OnInit {
     console.log(this.isRoundTrip)
     this.isRoundTrip = this.searchCriteria.tripType==2?true:false;
     if(this.isRoundTrip){
-      DeptFormatedDate = pipe.transform(this.searchCriteria.depatureDate, 'dd-MM-yyyy');
+      DeptFormatedDate = pipe.transform(this.searchCriteria.departureDate, 'dd-MM-yyyy');
       returnFormatedDate = pipe.transform(this.searchCriteria.returnDate, 'dd-MM-yyyy');
       this.scheduledFlights.forEach(element => {
-        if(element.srcid==this.searchCriteria.sourcePlaceId && element.destid==this.searchCriteria.destinationPlaceId && DeptFormatedDate==element.depatureDate){
+        if(element.srcid==this.searchCriteria.sourcePlaceId && element.destid==this.searchCriteria.destinationPlaceId && DeptFormatedDate==element.departureDate){
           this.singleSearchResults.push(element);
+          if(returnFormatedDate==element.returnDate){
+            this.roundSearchResults.push(element);
+          }
         }
         if(element.destid==this.searchCriteria.sourcePlaceId && element.srcid==this.searchCriteria.destinationPlaceId && returnFormatedDate==element.returnDate){
           this.roundSearchResults.push(element);
         }
       });
     }else{
-      DeptFormatedDate = pipe.transform(this.searchCriteria.depatureDate, 'dd-MM-yyyy');
+      DeptFormatedDate = pipe.transform(this.searchCriteria.departureDate, 'dd-MM-yyyy');
       this.scheduledFlights.forEach(element => {
-        if(element.srcid==this.searchCriteria.sourcePlaceId && element.destid==this.searchCriteria.destinationPlaceId && DeptFormatedDate==element.depatureDate){
+        if(element.srcid==this.searchCriteria.sourcePlaceId && element.destid==this.searchCriteria.destinationPlaceId && DeptFormatedDate==element.departureDate){
           this.singleSearchResults.push(element);
         }
       });
@@ -119,6 +126,7 @@ export class SearchFlightComponent implements OnInit {
   price = price.replace('$', '')
   this.totalTicketCost =+price; 
   console.log(this.totalTicketCost);
+  
 
  }
  onReturnWayConfirmation(){
@@ -137,6 +145,7 @@ resetForm(){
   this.passangerDetailsForm.reset();
 }
 onPassangersSubmission(){
+  let flag=0;
   this.isUserDetailsTabEnabled=false;
   this.isPaymentTabEnabled=true;
   this.roundSearchResults=[];
@@ -147,21 +156,38 @@ onPassangersSubmission(){
   if(passengerCount==1){
     this.passangersList[0].isPrimary = true;
   }
+  this.passangersList.forEach(element => {
+    if(element.isPrimary==true){
+      flag=1;
+    }
+  });
+  if(flag==0){
+    this.passangersList[0].isPrimary = true;
+  }
   console.log(this.passangersList)
 }
-addPassenger(){
-  debugger;
-  console.log(this.passangerDetailsForm.value)
-  if(this.passangerDetailsForm.value.isPrimary==true){
-    this.isPrimaryContactPresent=true;
+  addPassenger(){
+    debugger;
+    console.log(this.passangerDetailsForm.value)
+    if(this.passangerDetailsForm.value.isPrimary==true){
+      this.isPrimaryContactPresent=true;
+    }
+    if(this.passangerDetailsForm.value.isPrimary==null){
+      this.passangerDetailsForm.value.isPrimary=false;
+    }
+    this.passangersList.push(this.passangerDetailsForm.value)
+    console.log(this.passangersList)
+    this.resetForm();
   }
-  if(this.passangerDetailsForm.value.isPrimary==null){
-    this.passangerDetailsForm.value.isPrimary=false;
+  forwordTicket(data:any){
+    this.ticketData = data;
+    this.enableTicketTab =true;
   }
-  this.passangersList.push(this.passangerDetailsForm.value)
-  console.log(this.passangersList)
-  this.resetForm();
-}
+  ticketStatus(status:any){
+    debugger;
+    console.log(status)
+    this.statusVal = status
+  }
 
 
 
